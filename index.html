@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>django-generic-links by matagus</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>django-generic-links</h1>
+        <p>Simple and generic application for Django projects to attach and handle links for any object</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/matagus/django-generic-links" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/matagus/django-generic-links/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/matagus/django-generic-links/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>django-generic-links: attach and handle links to any django model</h1>
+
+<h2>Installation</h2>
+
+<p>Installing <code>django-generic-links</code> is fairly easy. You can...</p>
+
+<pre><code>(pip install | easy_install) django-generic-links
+</code></pre>
+
+<p>...or, you can clone the repo and install it the old fashioned way.</p>
+
+<pre><code>git clone git://github.com/matagus/django-generic-links.git
+cd django-generic-links
+sudo python setup.py install
+</code></pre>
+
+<p>then add <code>generic_links</code> to your <code>settings.py</code>:</p>
+
+<div class="highlight">
+<pre>    <span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="c"># ...</span>
+        <span class="s">'generic_links'</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre>
+</div>
+
+
+<p>and syncronize your database!</p>
+
+<pre><code># python manage.py syncdb
+</code></pre>
+
+<h2>Using django-generic-links models</h2>
+
+<p>Guess you have a music app in your project where you store Artist data. And you
+would like to store and display links for each artist, say his facebook page,
+his last.fm profile, his youtube artist page and the like:</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">generic_links.models</span> <span class="kn">import</span> <span class="n">GenericLink</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">music.models</span> <span class="kn">import</span> <span class="n">Artist</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lou_reed</span> <span class="o">=</span> <span class="n">Artist</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lou_reed</span>
+<span class="o">&lt;</span><span class="n">Artist</span><span class="p">:</span> <span class="n">Lou</span> <span class="n">Reed</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span> <span class="o">=</span> <span class="n">GenericLink</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Wikipedia Page"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s">"http://en.wikipedia.org/wiki/Lou_Reed"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span><span class="o">.</span><span class="n">is_external</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span><span class="o">.</span><span class="n">content_object</span> <span class="o">=</span> <span class="n">lour_reed</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span> <span class="o">=</span> <span class="n">GenericLink</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Youtube artist page"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s">"http://www.youtube.com/artist/lou_reed"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span><span class="o">.</span><span class="n">is_external</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span><span class="o">.</span><span class="n">content_object</span> <span class="o">=</span> <span class="n">lour_reed</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">link2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">generic_links.utils</span> <span class="kn">import</span> <span class="n">get_links_for</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">get_links_for</span><span class="p">(</span><span class="n">lou_reed</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">GenericLink</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">en</span><span class="o">.</span><span class="n">wikipedia</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">wiki</span><span class="o">/</span><span class="n">Lou_Reed</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">GenericLink</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">youtube</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">artist</span><span class="o">/</span><span class="n">lou_reed</span><span class="o">&gt;</span><span class="p">]</span>
+
+</pre>
+</div>
+
+
+<h2>Using django-generic-links templatetags</h2>
+
+<p>Now guess you have an artist page. You're passing <code>artist</code> object using template
+context and you want to get all the links for it:</p>
+
+<div class="highlight">
+<pre>{% load generic_links_tags %}
+
+<span class="nt">&lt;h1&gt;</span>{{ artist.name }}<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;p&gt;</span>{{ artist.description }}<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Links for {{ artist.name }}<span class="nt">&lt;/h2&gt;</span>
+{% get_links_for artist as artist_links %}
+<span class="nt">&lt;ul&gt;</span>
+{% for link in artist_links %}
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"{{ link.url }}"</span> <span class="na">title=</span><span class="s">"{{ link.title }}"</span><span class="nt">&gt;</span>{{ link.title }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+{% endfor %}
+<span class="nt">&lt;/ul&gt;</span>
+
+</pre>
+</div>
+
+
+<h2>Questions, Comments, etc?</h2>
+
+<p>You may use Github comments to comment this code or the project issues to open
+issues if you find a bug or a missing feature you'd like to have.</p>
+
+<p>You can also follow me on Twitter - <strong><a href="http://twitter.com/matagus">@matagus</a></strong>.</p>
+
+<h2>Want to help?</h2>
+
+<p>If you'd like to help, write example code, contribute patches, document things
+on the wiki your help is always appreciated! Just fork the project, clone your
+repo, commit, push and send me a pull request</p>
+
+<h2>License</h2>
+
+<p><code>django-generic-links</code> is released under an BSD License - see the <code>LICENSE</code> file
+for more information.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/matagus">matagus</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30977358-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
